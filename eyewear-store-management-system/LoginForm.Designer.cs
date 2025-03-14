@@ -1,6 +1,6 @@
 ﻿namespace eyewear_store_management_system
 {
-    partial class Form1
+    partial class LoginForm
     {
         /// <summary>
         ///  Required designer variable.
