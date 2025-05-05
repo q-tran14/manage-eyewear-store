@@ -2,30 +2,29 @@
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-
+using System.Diagnostics;
 namespace DAL.Utils
 {
     public class UtilityDatabase
     {
-        private static UtilityDatabase _instance;
+        private static UtilityDatabase? _instance;
         private static readonly object _lock = new object();
-        private SqlConnection conn;
-        private static string _connectMethod;
+        private SqlConnection _conn;
+        private static string? _connectMethod;
         private UtilityDatabase()
         {
+            _connectMethod = SelectConnectionMethod();
+            string connString = ConfigurationManager.ConnectionStrings[_connectMethod].ConnectionString;
+            Debug.WriteLine(connString);
             try
             {
-                _connectMethod = SelectConnectionMethod();
-                string connString = ConfigurationManager.ConnectionStrings[_connectMethod].ConnectionString;
-                conn = new SqlConnection(connString);
-                conn.Open(); //Kết nối database ngay khi app chạy
-                Console.WriteLine("Kết nối SQL Server thành công!");
-                File.AppendAllText("log.txt", "Kết nối SQL Server thành công!\n");
+                _conn = new SqlConnection(connString);
+                _conn.Open(); //Kết nối database ngay khi app chạy
+                Debug.WriteLine("Kết nối SQL Server thành công!");
             }
-            catch (Exception ex)
+            catch (SqlException ex)
             {
-                throw new Exception("Lỗi kết nối cơ sở dữ liệu: " + ex.Message);
-                //Environment.Exit(1);
+                throw ex;
             }
         }
 
@@ -45,7 +44,11 @@ namespace DAL.Utils
         }
         public void CloseConnection()
         {
-            if (conn != null && conn.State == ConnectionState.Open) conn.Close();
+            if (_conn != null && _conn.State == ConnectionState.Open)
+            {
+                _conn.Close();
+                Debug.WriteLine("Đóng kết nối - " + _conn.State.ToString());
+            } 
         }
 
         private static string SelectConnectionMethod()
@@ -66,7 +69,7 @@ namespace DAL.Utils
             DataTable dt = new DataTable();
             try
             {
-                using (SqlCommand command = new SqlCommand(query, conn))
+                using (SqlCommand command = new SqlCommand(query, _conn))
                 {
                     if (parameters != null) command.Parameters.AddRange(parameters);
 
@@ -78,9 +81,8 @@ namespace DAL.Utils
             }
             catch (Exception ex)
             {
-                throw new Exception("Lỗi khi thực thi truy vấn: " + ex.Message);
+                throw new Exception($"Lỗi khi thực thi truy vấn: - {DateTime.Now}\n{ex.Message}\n");
             }
-
             return dt;
         }
 
@@ -92,17 +94,16 @@ namespace DAL.Utils
         {
             try
             {
-                using (SqlCommand command = new SqlCommand(query, conn))
+                using (SqlCommand command = new SqlCommand(query, _conn))
                 {
                     if (parameters != null) command.Parameters.AddRange(parameters);
-
                     return command.ExecuteNonQuery(); // Trả về số dòng bị ảnh hưởng
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception("Lỗi khi thực thi truy vấn: " + ex.Message);
-                return -1; // Trả về -1 nếu lỗi
+                throw new Exception($"Lỗi khi thực thi truy vấn: - {DateTime.Now}\n{ex.Message}\n");
+                // return -1; // Trả về -1 nếu lỗi
             }
         }
 

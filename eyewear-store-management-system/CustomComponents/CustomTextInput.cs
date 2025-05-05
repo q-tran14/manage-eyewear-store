@@ -360,7 +360,7 @@ namespace eyewear_store_management_system.CustomComponents
                 isPlaceholder = false;
                 textBox1.ForeColor = this.ForeColor;
                 if (isPasswordChar)
-                    textBox1.UseSystemPasswordChar = false;
+                    textBox1.UseSystemPasswordChar = isPasswordChar;
             }
 
         }

@@ -14,6 +14,7 @@ namespace eyewear_store_management_system.Utils
             }
 
             ToastForm toast = new ToastForm(title, message, type, parentForm);
+            
             toast.Show();
         }
     }

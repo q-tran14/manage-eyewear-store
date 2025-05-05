@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace eyewear_store_management_system.Utils
 {
@@ -93,8 +94,9 @@ namespace eyewear_store_management_system.Utils
                 foreach (DataGridViewColumn column in dgv.Columns)
                 {
                     column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                    column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                    column.HeaderCell.Style.Font = new System.Drawing.Font("Californian FB", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
                 }
+                dgv.RowsDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             };
         }
 

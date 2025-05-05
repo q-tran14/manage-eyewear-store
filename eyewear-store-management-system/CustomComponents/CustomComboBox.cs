@@ -38,14 +38,18 @@ namespace eyewear_store_management_system.CustomComponents
             lblText = new Label();
             btnIcon = new Button();
             this.SuspendLayout();
+            this.MinimumSize = new Size(200, 30);
+            this.Size = new Size(200, 30);
 
             //ComboBox: Dropdown list
             cmbList.BackColor = listBackColor;
             cmbList.Font = new Font(this.Font.Name, 10F);
             cmbList.ForeColor = listTextColor;
+            cmbList.Dock = DockStyle.Fill;
+            cmbList.SendToBack();
+            cmbList.Visible = false;
             cmbList.SelectedIndexChanged += new EventHandler(ComboBox_SelectedIndexChanged);//Default event
             cmbList.TextChanged += new EventHandler(ComboBox_TextChanged);//Refresh text
-
             //Button: Icon
             btnIcon.Dock = DockStyle.Right;
             btnIcon.FlatStyle = FlatStyle.Flat;
@@ -72,8 +76,6 @@ namespace eyewear_store_management_system.CustomComponents
             this.Controls.Add(lblText);//2
             this.Controls.Add(btnIcon);//1
             this.Controls.Add(cmbList);//0
-            this.MinimumSize = new Size(200, 30);
-            this.Size = new Size(200, 30);
             this.ForeColor = Color.DimGray;
             this.Padding = new Padding(borderSize);//Border Size
             this.Font = new Font(this.Font.Name, 10F);

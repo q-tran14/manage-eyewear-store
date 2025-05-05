@@ -30,14 +30,15 @@
         {
             this.SuspendLayout();
             // 
-            // toastForm
+            // ToastForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(275, 70);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "toastForm";
+            this.Name = "ToastForm";
             this.Text = "toastForm";
+            this.Click += new System.EventHandler(this.ToastForm_Click);
             this.ResumeLayout(false);
 
         }
